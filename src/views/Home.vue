@@ -1,18 +1,24 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <v-btn
+      @click="setupCard = true"
+    >
+      Toggle Setup Card
+    </v-btn>
+    <setup-card v-model="setupCard"/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import SetupCard from '@/components/SetupCard.vue'; // @ is an alias to /src
 
 @Component({
   components: {
-    HelloWorld,
+    SetupCard,
   },
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  setupCard = false;
+}
 </script>

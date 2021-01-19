@@ -1,11 +1,8 @@
 <template>
   <div>
-    <link href="quill.snow.css" rel="stylesheet">
-    
     <div id="toolbar">
     </div>
     
-    <!-- Create the editor container -->
     <div id="editor" class="editor" ref="editor">
       <p>Hello World!</p>
     </div>
@@ -39,6 +36,7 @@
 
       // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [ 'link', 'image', 'video', 'formula' ],          // add's image support
 
       [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
       [{ 'font': [] }],

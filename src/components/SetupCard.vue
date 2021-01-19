@@ -73,11 +73,25 @@
             </v-stepper-content>
 
             <v-stepper-content step="3">
-              <div class="d-flex flex-column">
+              <div class="d-flex flex-column" style="overflow-y: scroll; max-height: 600px">
                 <article>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Maecenas pharetra convallis posuere morbi leo urna molestie. Tempor nec feugiat nisl pretium fusce id velit ut tortor.
                 </article>
-                <message-creator class="mt-8"/>
+                <v-tabs v-model="editorTab" class="mt-8">
+                  <v-tab>
+                    Basic Editor
+                  </v-tab>
+                  <v-tab>
+                    Advanced Editor
+                  </v-tab>
+
+                  <v-tab-item class="mt-2">
+                    <message-creator/>
+                  </v-tab-item>
+                  <v-tab-item class="mt-2">
+                    <advanced-message-creator/>
+                  </v-tab-item>
+                </v-tabs>
               </div>
             </v-stepper-content>
 
@@ -117,15 +131,18 @@
   import Component from 'vue-class-component'
   import {Watch, Prop} from 'vue-property-decorator';
   import MessageCreator from '@/components/MessageCreator.vue';
+  import AdvancedMessageCreator from '@/components/AdvancedMessageCreator.vue';
 
   @Component({
     components: {
-      MessageCreator
+      MessageCreator,
+      AdvancedMessageCreator
     }
   })
   export default class SetupCard extends Vue {
     isShowing = false;
     page = 1;
+    editorTab = 0;
     @Prop(Boolean) readonly value!: boolean;
 
     mounted() {

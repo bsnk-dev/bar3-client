@@ -1,6 +1,6 @@
 <template>
-  <v-dialog v-model="isShowing" max-width="1000px" max-height="800px" persistent style="height: 100vh">
-    <v-card class="setup-card">
+  <v-dialog v-model="isShowing" max-width="1000px" max-height="800px" persistent style="height: 100vh" :fullscreen="$vuetify.breakpoint.mobile">
+    <v-card>
       <v-card-title>
         Setup Bar 3
       </v-card-title>
@@ -39,7 +39,7 @@
             </v-stepper-step>
           </v-stepper-header>
 
-          <v-stepper-items class="d-flex flex-column">
+          <v-stepper-items class="d-flex flex-column setup-card">
             <v-stepper-content step="1">
               <div class="d-flex flex-column">
                 <v-img src="@/assets/bar3.png" class="ma-auto" width="30%"/>
@@ -61,23 +61,53 @@
 
             <v-stepper-content step="2">
               <div class="d-flex flex-column">
+                <h2 class="mb-3">
+                  API Details
+                </h2>
                 <article class="small-block">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Maecenas pharetra convallis posuere morbi leo urna molestie. Tempor nec feugiat nisl pretium fusce id velit ut tortor.
+                  To send messages Bar 3 requires your API key from Politics and War. 
+                  To retrieve the key go to <a target="_blank" href="https://politicsandwar.com/account">the account page</a>.
+                  Additionally, you need to set how often you want to check for new nations. Just set the minutes to update in the second box.
                 </article>
+
                 <v-text-field
                   label="API Key"
-                  class="small-block mt-6 mb-16"
+                  class="small-block mt-6"
                   outlined
+                  v-model="setup.apiKey"
+                />
+
+                <v-text-field
+                  label="Minutes to Update"
+                  type="number"
+                  class="small-block  mb-16"
+                  outlined
+                  v-model="setup.minutesToUpdate"
                 />
               </div>
             </v-stepper-content>
 
             <v-stepper-content step="3">
-              <div class="d-flex flex-column" style="overflow-y: scroll; max-height: 600px">
+              <div class="d-flex flex-column" style="overflow-y: auto; max-height: 600px">
+                <h2 class="mb-3">
+                  Your Message
+                </h2>
                 <article>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Maecenas pharetra convallis posuere morbi leo urna molestie. Tempor nec feugiat nisl pretium fusce id velit ut tortor.
+                  This is the message creator. It allows you to easily create rich messages or advanced messages. 
+                  You can create a new message later, but you must create one before you can use Bar 3.
+                  The advanced editor allows you to create html and css whilst previewing its result, 
+                  it is important you test these in the real game using the test button.
                 </article>
-                <v-tabs v-model="editorTab" class="mt-8">
+
+                <v-text-field
+                  dense
+                  outlined
+                  placeholder="Subject Line"
+                  v-model="setup.subjectLine"
+                  class="mt-8"
+                />
+
+                <v-tabs v-model="editorTab" class="mt-2">
                   <v-tab>
                     Basic Editor
                   </v-tab>
@@ -86,10 +116,10 @@
                   </v-tab>
 
                   <v-tab-item class="mt-2">
-                    <message-creator/>
+                    <message-creator @change="setup.quill = $event"/>
                   </v-tab-item>
                   <v-tab-item class="mt-2">
-                    <advanced-message-creator/>
+                    <advanced-message-creator @change="setup.advanced = $event"/>
                   </v-tab-item>
                 </v-tabs>
               </div>
@@ -97,9 +127,20 @@
 
             <v-stepper-content step="4">
               <div class="d-flex flex-column">
+                <h2 class="mb-3 black--text">
+                  You're Done! 🎉
+                </h2>
                 <article class="small-block">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Maecenas pharetra convallis posuere morbi leo urna molestie. Tempor nec feugiat nisl pretium fusce id velit ut tortor.
+                  You're done setting up Bar 3. The next screen to greet you will the dashboard, 
+                  but you can use the menu on the left to navigate to the configuration to customize what you set up here.
                 </article>
+                <article class="small-block mt-3">
+                  Please star the project on Github to show your support 😀. 
+                  You can also share this application with anyone interested.
+                </article>
+                <h3 class="small-block mt-16">
+                  Thanks for using Bar 3.
+                </h3>
               </div>
             </v-stepper-content>
 
@@ -114,9 +155,10 @@
 
               <v-btn
                 color="primary"
-                @click="page++"
+                @click="nextPage()"
+                :disabled="!canGoToNextPage"
               >
-                Continue
+                {{ (this.page == this.maxPage) ? 'Finish' : 'Continue' }}
               </v-btn>
             </div>
           </v-stepper-items>
@@ -142,11 +184,48 @@
   export default class SetupCard extends Vue {
     isShowing = false;
     page = 1;
+    maxPage = 4;
     editorTab = 0;
+    setup = {
+      apiKey: '',
+      subjectLine: '',
+      quill: '',
+      advanced: '',
+      minutesToUpdate: 3,
+    };
+
     @Prop(Boolean) readonly value!: boolean;
 
     mounted() {
       this.isShowing = this.value;
+    }
+
+    get canGoToNextPage() {
+      if (this.page == 2) {
+        if (!this.setup.apiKey || !this.setup.minutesToUpdate) return false;
+      } else if (this.page == 3) {
+        if ((!(this.setup.quill && this.editorTab == 0) && 
+            !(this.setup.advanced && this.editorTab == 1)) ||
+            !this.setup.subjectLine) {
+              return false;
+            }
+      }
+
+      return true;
+    }
+
+    nextPage() {
+      if (!this.canGoToNextPage) return;
+      if (this.page == this.maxPage) {
+        this.isShowing = false;
+        return;
+      }
+
+      this.page++;
+    }
+
+    complete() {
+      //
     }
   
     @Watch('value')
@@ -167,8 +246,8 @@
   }
 
   .small-block {
-    width: 50%;
-    min-width: 280px;
+    width: 60%;
+    min-width: 300px;
     margin-left: auto !important;
     margin-right: auto !important;
   }

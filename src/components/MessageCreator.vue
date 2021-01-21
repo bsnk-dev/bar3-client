@@ -6,9 +6,6 @@
     <div id="editor" class="editor" ref="editor">
       <p>Hello World!</p>
     </div>
-
-    <a @click="digestQuill()">Show code</a>
-    
   </div>
 </template>
 <script lang="ts">
@@ -18,10 +15,10 @@
   import 'quill/dist/quill.snow.css';
   import juice from 'juice';
   import quillStyles from '!!raw-loader!quill/dist/quill.snow.css';
-
+  import { debounce } from 'debounce';
+  
   @Component
   export default class MessageCreator extends Vue {
-    subjectLine = '';
     messageQuill = '';
     editor: Quill | undefined;
     toolbarOptions = [
@@ -47,6 +44,7 @@
 
     beforeDestroy() {
       this.editor?.disable();
+      this.digestQuill((this.$refs.editor as Element).children[0].innerHTML);
     }
 
     mounted() {
@@ -54,17 +52,21 @@
         modules: { toolbar: this.toolbarOptions },
         theme: 'snow'
       });
+
+      this.editor.on('text-change', debounce(() => {
+        this.digestQuill((this.$refs.editor as Element).children[0].innerHTML);
+      }, 1000));
     }
 
-    digestQuill() {
-      const digested = juice((this.$refs.editor as Element).children[0].innerHTML, {
-        extraCss: `<style>${quillStyles}</style>`,
+    digestQuill(html: string) {
+      const digested = juice(html, {
+        extraCss: quillStyles,
         preserveMediaQueries: false,
         preserveFontFaces: false,
         preserveKeyFrames: false
       });
 
-      return digested;
+      this.$emit('change', digested);
     }
   }
 </script>
@@ -72,5 +74,6 @@
 <style scoped>
   .editor {
     min-height: 30vh;
+    color: black;
   }
 </style>

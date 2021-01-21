@@ -6,6 +6,7 @@
     <prism-editor
       class="editor height-300"
       v-model="html"
+      @input="debouncedDigest()"
       :highlight="highlighterHTML"
       line-numbers
     ></prism-editor>
@@ -16,15 +17,16 @@
     <prism-editor
       class="editor height-300"
       v-model="css"
+      @input="debouncedDigest()"
       :highlight="highlighterCSS"
       line-numbers
     ></prism-editor>
 
     <v-subheader>
-      Your Result
+      Preview
     </v-subheader>
-    <div class="ml-4 preview">
-      <preview-message :htmlPreview="html"/>
+    <div>
+      <preview-message :htmlPreview="digested" class="preview"/>
     </div>
   </div>
 </template>
@@ -41,6 +43,8 @@
   import "prismjs/components/prism-markup";
   import "prismjs/components/prism-xml-doc";
   import "prismjs/themes/prism-tomorrow.css";
+  import juice from 'juice';
+  import { debounce } from 'debounce';
 
   @Component({
     components: {
@@ -48,9 +52,10 @@
       PrismEditor
     }
   })
-  export default class Preview extends Vue {
+  export default class AdvancedMessageCreator extends Vue {
     html = '<div></div>';
     css = '';
+    digested = '';
 
     mounted() {
       console.log(languages);
@@ -63,13 +68,29 @@
     highlighterCSS(code: string) {
       return highlight(code, languages.css); //returns html
     }
+
+    digest() {
+      const digested = juice(this.html, {
+        extraCss: this.css.replace(/\n/g, ''),
+        preserveMediaQueries: false,
+        preserveFontFaces: false,
+        preserveKeyFrames: false
+      });
+
+      this.digested = digested;
+      this.$emit('change', digested);
+    }
+
+    debouncedDigest: Function = debounce(this.digest, 500);
   }
 </script>
 <style scoped>
   .preview {
-    border: 2px solid black;
-    height: 100%;
-    width: 300px;
+    border-radius: 5px;
+    padding: 10px;
+    min-height: 200px;
+    width: 100%;
+    font-family: "Roboto",Arial;
   }
 
   .editor {

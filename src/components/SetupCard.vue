@@ -43,7 +43,7 @@
             <v-stepper-content step="1">
               <div class="d-flex flex-column">
                 <v-img src="@/assets/bar3.png" class="ma-auto" width="30%"/>
-                <h3 class="ma-auto" style="width: 60%; text-align: center">
+                <h3 class="ma-auto small-block" style="text-align: center">
                   Start using Bar 3 to get rich and customized messages sent to each new player of the game when they join.
                 </h3>
                 <v-btn
@@ -174,6 +174,7 @@
   import {Watch, Prop} from 'vue-property-decorator';
   import MessageCreator from '@/components/MessageCreator.vue';
   import AdvancedMessageCreator from '@/components/AdvancedMessageCreator.vue';
+  import sendConfig from '@/actions/sendConfig';
 
   @Component({
     components: {
@@ -193,6 +194,7 @@
       advanced: '',
       minutesToUpdate: 3,
     };
+    error = false; // TODO: Add error stopper
 
     @Prop(Boolean) readonly value!: boolean;
 
@@ -217,7 +219,8 @@
     nextPage() {
       if (!this.canGoToNextPage) return;
       if (this.page == this.maxPage) {
-        this.isShowing = false;
+        this.complete();
+
         return;
       }
 
@@ -225,7 +228,20 @@
     }
 
     complete() {
-      //
+      this.isShowing = false;
+      const res = sendConfig({
+        apiKey: this.setup.apiKey,
+        messageSubject: this.setup.subjectLine,
+        messageHTML: (this.editorTab == 0) ? this.setup.quill : this.setup.advanced,
+        updatePeriodMilliseconds: this.setup.minutesToUpdate * 60000,
+      }); // we are done, send the config to the app
+
+      if (!res) {
+        this.error = true;
+        alert('Couldn\'t update config! Please try again and verify the server is running.');
+      }
+
+      this.$emit('complete');
     }
   
     @Watch('value')

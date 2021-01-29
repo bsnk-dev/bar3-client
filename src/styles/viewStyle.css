@@ -1,0 +1,10 @@
+.view-small-inner-wrapper {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.view-padding-inner-wrapper {
+  padding: 25px;
+}

@@ -4,7 +4,6 @@
     </div>
     
     <div id="editor" class="editor" ref="editor">
-      <p>Hello World!</p>
     </div>
   </div>
 </template>

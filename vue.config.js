@@ -14,6 +14,8 @@ module.exports = {
                 PACKAGE_VERSION: '"' + version + '"'
             }
         })
-    ]
+    ],
+
+    devtool: 'source-map'
   },
 }

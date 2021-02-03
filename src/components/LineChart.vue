@@ -29,6 +29,11 @@ export default {
               //max: 1,
             },
           }],
+          xAxes: [{
+            gridLines: {
+              display: false,
+            }
+          }]
         },
         legend: {
           display: true,

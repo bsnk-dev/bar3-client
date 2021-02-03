@@ -9,6 +9,13 @@ export interface Config {
   configVersion?: string;
 }
 
+export class Config implements Config {
+  apiKey = '';
+  messageSubject = '';
+  messageHTML = '';
+  updatePeriodMilliseconds = 0;
+}
+
 export interface Message {
   sentTimeMilliseconds: number;
   nation: NationAPICall.Nation;

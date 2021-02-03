@@ -9,7 +9,8 @@
 </template>
 <script lang="ts">
   import Vue from 'vue';
-  import Component from "vue-class-component";
+  import Component from 'vue-class-component';
+  import { Prop, Watch } from 'vue-property-decorator';
   import Quill from 'quill';
   import 'quill/dist/quill.snow.css';
   import juice from 'juice';
@@ -40,6 +41,14 @@
 
       ['clean']                                         // remove formatting button
     ];
+
+    @Prop(String) inputHTML!: string;
+
+    @Watch('inputHTML')
+    onInputHTMLChanged(value: string) {
+      this.messageQuill = value;
+      this.editor?.setText(this.messageQuill);
+    }
 
     beforeDestroy() {
       this.editor?.disable();

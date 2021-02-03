@@ -32,7 +32,8 @@
 </template>
 <script lang="ts">
   import Vue from 'vue';
-  import Component from "vue-class-component";
+  import Component from 'vue-class-component';
+  import { Prop, Watch } from 'vue-property-decorator';
   import PreviewMessage from '@/components/PreviewMessage.vue';
   import { PrismEditor } from "vue-prism-editor";
   import "vue-prism-editor/dist/prismeditor.min.css";
@@ -56,9 +57,23 @@
     html = '<div></div>';
     css = '';
     digested = '';
+    
+    @Prop(String) inputHTML!: string;
+    @Prop(String) inputCSS!: string;
 
     mounted() {
-      console.log(languages);
+      this.html = this.inputHTML;
+      this.css = this.inputCSS;
+    }
+
+    @Watch('inputHTML')
+    onInputHTMLChanged(value: string) {
+      this.html = value;
+    }
+
+    @Watch('inputCSS')
+    onInputCSSChanged(value: string) {
+      this.css = value;
     }
 
     highlighterHTML(code: string) {

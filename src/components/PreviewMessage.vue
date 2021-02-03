@@ -1,6 +1,6 @@
 <template>
   <div class="red-msg">
-    <div v-html="htmlPreview"></div>
+    <div v-html="htmlPreview" class="pa-3"></div>
   </div>
 </template>
 <script lang="ts">

@@ -74,6 +74,11 @@ import Vue from 'vue';
         path: '/config',
       },
       {
+        title: 'Message Creator',
+        icon: 'mdi-email',
+        path: '/message-creator',
+      },
+      {
         title: 'About',
         icon: 'mdi-information',
         path: '/about',

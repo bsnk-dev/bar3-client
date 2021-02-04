@@ -47,7 +47,7 @@
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator';
   import getConfig from '@/actions/getConfig';
-  import { Config } from '@/types';
+  import { Config, DefaultConfig } from '@/types';
   import PreviewMessage from '@/components/PreviewMessage.vue';
 
   @Component({
@@ -56,14 +56,14 @@
     }
   })
   export default class Configuration extends Vue {
-    config: Config = new Config();
+    config: Config = new DefaultConfig();
     minutesToUpdate = 0;
 
     async mounted() {
       const config = await getConfig();
       if (config && !(config instanceof Error)) {
         this.config = config;
-        this.minutesToUpdate = config.updatePeriodMilliseconds / 60000;
+        this.minutesToUpdate = (config.updatePeriodMilliseconds || 0) / 60000;
       } else {
         alert('Couldn\'t retrieve your config!');
       }

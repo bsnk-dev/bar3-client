@@ -62,18 +62,20 @@
     @Prop(String) inputCSS!: string;
 
     mounted() {
-      this.html = this.inputHTML;
-      this.css = this.inputCSS;
+      this.html = this.inputHTML || '';
+      this.css = this.inputCSS || '';
+
+      this.digest();
     }
 
     @Watch('inputHTML')
     onInputHTMLChanged(value: string) {
-      this.html = value;
+      this.html = value || '';
     }
 
     @Watch('inputCSS')
     onInputCSSChanged(value: string) {
-      this.css = value;
+      this.css = value || '';
     }
 
     highlighterHTML(code: string) {
@@ -94,6 +96,8 @@
 
       this.digested = digested;
       this.$emit('change', digested);
+      this.$emit('css', this.css);
+      this.$emit('html', this.html);
     }
 
     debouncedDigest: Function = debounce(this.digest, 500);

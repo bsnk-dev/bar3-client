@@ -119,7 +119,7 @@
                     <message-creator @change="setup.quill = $event"/>
                   </v-tab-item>
                   <v-tab-item class="mt-2">
-                    <advanced-message-creator @change="setup.advanced = $event"/>
+                    <advanced-message-creator @change="setup.advanced = $event" @html="setup.advancedRaw.html = $event" @css="setup.advancedRaw.css = $event"/>
                   </v-tab-item>
                 </v-tabs>
               </div>
@@ -192,6 +192,10 @@
       subjectLine: '',
       quill: '',
       advanced: '',
+      advancedRaw: {
+        html: '',
+        css: '',
+      },
       minutesToUpdate: 3,
     };
     error = false; // TODO: Add error stopper
@@ -233,6 +237,10 @@
         apiKey: this.setup.apiKey,
         messageSubject: this.setup.subjectLine,
         messageHTML: (this.editorTab == 0) ? this.setup.quill : this.setup.advanced,
+        advancedRaw: {
+          html: this.setup.advancedRaw.html,
+          css: this.setup.advancedRaw.css,
+        },
         updatePeriodMilliseconds: this.setup.minutesToUpdate * 60000,
       }); // we are done, send the config to the app
 

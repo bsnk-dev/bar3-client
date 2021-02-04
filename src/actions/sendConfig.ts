@@ -6,6 +6,9 @@ export default async function sendConfig(config: Config) {
 
   const response = await fetch(`${store.getters.serverIP}/api/setConfig`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({
       config: config
     })

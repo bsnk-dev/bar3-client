@@ -46,8 +46,8 @@
 
     @Watch('inputHTML')
     onInputHTMLChanged(value: string) {
-      this.messageQuill = value;
-      this.editor?.setText(this.messageQuill);
+      this.messageQuill = value || '';
+      this.editor?.clipboard.dangerouslyPasteHTML(this.messageQuill);
     }
 
     beforeDestroy() {
@@ -64,6 +64,9 @@
       this.editor.on('text-change', debounce(() => {
         this.digestQuill((this.$refs.editor as Element).children[0].innerHTML);
       }, 1000));
+
+      this.messageQuill = this.inputHTML || '';
+      this.editor?.setText(this.messageQuill);
     }
 
     digestQuill(html: string) {

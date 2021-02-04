@@ -1,18 +1,26 @@
 import toRGBA from '@/utilities/toRGBA';
 
 export interface Config {
-  apiKey: string;
+  apiKey?: string;
   messageSubject: string;
   messageHTML: string;
-  updatePeriodMilliseconds: number;
+  advancedRaw: {
+    html: string;
+    css: string;
+  };
+  updatePeriodMilliseconds?: number;
   queueTime?: number;
   configVersion?: string;
 }
 
-export class Config implements Config {
+export class DefaultConfig implements Config {
   apiKey = '';
   messageSubject = '';
   messageHTML = '';
+  advancedRaw = {
+    html: '',
+    css: ''
+  };
   updatePeriodMilliseconds = 0;
 }
 

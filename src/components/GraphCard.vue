@@ -16,11 +16,11 @@
     </template>
     <template v-if="graphType == 'apiRequests'">
       <v-card-title>
-        API Requests Remaining
+        API Requests
       </v-card-title>
       <v-card-text>
         <h4>
-          Your API Requests
+          Your Used API Requests
         </h4>
         <h2>
           {{ APIRequests.used }} / {{ APIRequests.max }}
@@ -68,17 +68,23 @@
     }
 
     generateSentMessagesChartData() {
-      const labels = [];
+      const labels: string[] = [];
 
       const dataset = new VueLineChart.Dataset();
       dataset.label = 'Message Count';
       dataset.fill = false;
 
+      if (this.sentMessages.length == 0) {
+        this.chartData.labels = labels;
+        this.chartData.datasets.push(dataset);
+        this.loaded = true;
+        return;
+      }
+
       const firstMessage = this.sentMessages[0];
-      const lastMessage = this.sentMessages[this.sentMessages.length - 1];
 
       const twoHours = 7200000;
-      const totalIncrements = Math.ceil((lastMessage.sentTimeMilliseconds - firstMessage.sentTimeMilliseconds) / twoHours);
+      const totalIncrements = Math.ceil((Date.now() - firstMessage.sentTimeMilliseconds) / twoHours);
 
       let lastMessageIndex = 0;
 

@@ -47,7 +47,7 @@
               {{ messageItem.nation.leader }}
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{ new Date(messageItem.sentTimeMiliseconds).toLocaleString() }}
+              {{ new Date(messageItem.sentTimeMilliseconds).toLocaleString() }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>

@@ -20,6 +20,8 @@
           />
         </div>
       </template>
+      
+      <application-on-control class="ml-auto"/>
     </v-app-bar>
 
     <side-bar v-model="sideBarOpen" :disabled="!setup"/>
@@ -37,12 +39,14 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import SideBar from '@/components/SideBar.vue';
 import SetupCard from '@/components/SetupCard.vue'; // @ is an alias to /src
+import ApplicationOnControl from '@/components/ApplicationOnControl.vue';
 
 @Component({
   name: 'App',
   components: {
     SideBar,
-    SetupCard
+    SetupCard,
+    ApplicationOnControl
   }
 })
 export default class App extends Vue {
@@ -73,6 +77,7 @@ export default class App extends Vue {
     this.setup = json.isSetup;
     this.$store.commit('setApplicationState', json.applicationOn);
     this.$store.commit('setSentMessages', json.sentMessages);
+    this.$store.commit('setAPIDetails', json.apiDetails);
 
     if (!this.setup) {
       this.setupCardOpen = true;

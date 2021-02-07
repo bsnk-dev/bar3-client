@@ -14,7 +14,8 @@
       label="API Key"
       class="mt-6"
       outlined
-      v-model="config.apiKey"
+      v-model="apiKey"
+      @input="changes()"
     />
 
     <v-text-field
@@ -23,6 +24,7 @@
       class="mb-16"
       outlined
       v-model="minutesToUpdate"
+      @input="changes()"
     />
     <div class="d-flex">
       <h2 class="mb-3 mt-2">
@@ -41,29 +43,71 @@
       Preview
     </h5>
     <preview-message :html-preview="config.messageHTML"/>
+    <saved-changes-card
+      v-model="saveChangesOpen"
+      @save="save()"
+    />
   </div>
 </template>
 
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator';
   import getConfig from '@/actions/getConfig';
+  import sendConfig from '@/actions/sendConfig';
   import { Config, DefaultConfig } from '@/types';
   import PreviewMessage from '@/components/PreviewMessage.vue';
+  import SavedChangesCard from '@/components/SavedChangesCard.vue';
 
   @Component({
     components: {
-      PreviewMessage
+      PreviewMessage,
+      SavedChangesCard
     }
   })
   export default class Configuration extends Vue {
     config: Config = new DefaultConfig();
     minutesToUpdate = 0;
+    apiKey = '';
+    saveChangesOpen = false;
+    error = false;
+
+    async save() {
+      const newConfig = {
+        apiKey: this.apiKey,
+        updatePeriodMilliseconds: this.minutesToUpdate * 60000
+      };
+
+      const res = await sendConfig(newConfig);
+      Object.assign(this.config, newConfig);
+
+      if (!res) {
+        this.error = true;
+        alert('Couldn\'t update config! Please try again and verify the server is running.');
+      } else {
+        this.saveChangesOpen = false;
+      }
+    }
+
+    changes() {
+      if (this.apiKey != this.config.apiKey) {
+        this.saveChangesOpen = true;
+        return;
+      }
+      
+      if (this.minutesToUpdate != (this.config.updatePeriodMilliseconds || 0) / 60000) {
+        this.saveChangesOpen = true;
+        return;
+      }
+
+      this.saveChangesOpen = false;
+    }
 
     async mounted() {
       const config = await getConfig();
       if (config && !(config instanceof Error)) {
         this.config = config;
         this.minutesToUpdate = (config.updatePeriodMilliseconds || 0) / 60000;
+        this.apiKey = config.apiKey || '';
       } else {
         alert('Couldn\'t retrieve your config!');
       }

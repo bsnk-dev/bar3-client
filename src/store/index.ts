@@ -10,8 +10,8 @@ export default new Vuex.Store({
     sentMessages: [],
     packageVersion: process.env.PACKAGE_VERSION || '0',
     apiDetails: {
-      used: 750,
-      max: 5000,
+      used: 0,
+      max: 0,
     },
   },
   getters: {
@@ -24,7 +24,7 @@ export default new Vuex.Store({
     },
 
     sentMessages(state) {
-      // return state.sentMessages; FIXME
+      return state.sentMessages;
 
       const twoHours = 7200000;
 

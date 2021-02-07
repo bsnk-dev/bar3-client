@@ -35,28 +35,10 @@
         />
       </v-tab-item>
     </v-tabs>
-    <transition name="slideup">
-      <v-card class="save-changes-card elevation-5" v-if="saveChangesOpen">
-        <v-card-title>
-          Save Your Changes
-        </v-card-title>
-        <v-card-text>
-          <v-btn
-            depressed
-            block
-            color="primary"
-            @click="save()"
-          >
-            <v-icon
-              left
-            >
-              mdi-check
-            </v-icon>
-            Save
-          </v-btn>
-        </v-card-text>
-      </v-card>
-    </transition>
+    <saved-changes-card
+      v-model="saveChangesOpen"
+      @save="save()"
+    />
   </div>
 </template>
 
@@ -67,11 +49,13 @@
   import { Config, DefaultConfig } from '@/types';
   import MessageCreator from '@/components/MessageCreator.vue';
   import AdvancedMessageCreator from '@/components/AdvancedMessageCreator.vue';
+  import SavedChangesCard from '@/components/SavedChangesCard.vue';
 
   @Component({
     components: {
       MessageCreator,
-      AdvancedMessageCreator
+      AdvancedMessageCreator,
+      SavedChangesCard
     }
   })
   export default class MessageDesigner extends Vue {
@@ -92,11 +76,12 @@
     async mounted() {
       const config = await getConfig();
       if (config && !(config instanceof Error)) {
-        this.advancedRaw.html = config.advancedRaw.html;
-        this.advancedRaw.css = config.advancedRaw.css;
-        this.messageHTML.quill = config.messageHTML;
-        this.subject = config.messageSubject;
+        this.advancedRaw.html = config?.advancedRaw?.html || '';
+        this.advancedRaw.css = config?.advancedRaw?.css || '';
+        this.messageHTML.quill = config.messageHTML || '';
+        this.subject = config.messageSubject || '';
         this.config = config;
+        this.changes();
       } else {
         alert('Couldn\'t retrieve your config!');
       }
@@ -106,7 +91,7 @@
       if (this.editorTab == 0 && this.messageHTML.quill != this.config.messageHTML) {
         this.saveChangesOpen = true;
         return;
-      } else if (this.editorTab == 1 && (this.advancedRaw.html != this.config.advancedRaw.html || this.advancedRaw.css != this.config.advancedRaw.css)) {
+      } else if (this.editorTab == 1 && (this.advancedRaw.html != this.config.advancedRaw?.html || this.advancedRaw.css != this.config.advancedRaw.css)) {
         this.saveChangesOpen = true;
         return;
       } else if (this.subject != this.config.messageSubject) {

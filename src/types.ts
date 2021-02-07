@@ -2,9 +2,9 @@ import toRGBA from '@/utilities/toRGBA';
 
 export interface Config {
   apiKey?: string;
-  messageSubject: string;
-  messageHTML: string;
-  advancedRaw: {
+  messageSubject?: string;
+  messageHTML?: string;
+  advancedRaw?: {
     html: string;
     css: string;
   };

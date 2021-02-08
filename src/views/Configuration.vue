@@ -26,7 +26,7 @@
       v-model="minutesToUpdate"
       @input="changes()"
     />
-    <div class="d-flex">
+    <div class="d-flex align-center">
       <h2 class="mb-3 mt-2">
         Your Message
       </h2>

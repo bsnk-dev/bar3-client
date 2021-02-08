@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isApplicationOn: false,
-    serverIP: 'http://localhost:8055',
+    serverIP: 'http://192.168.1.21:8055',
     sentMessages: [],
     packageVersion: process.env.PACKAGE_VERSION || '0',
     apiDetails: {

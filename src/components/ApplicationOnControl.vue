@@ -1,6 +1,7 @@
 <template>
   <v-btn
     :color="applicationOn ? 'green' : 'red'"
+    depressed
     @click="toggleApplication()"
   >
     <v-icon

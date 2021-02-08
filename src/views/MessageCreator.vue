@@ -2,7 +2,17 @@
 
 <template>
   <div class="view-small-inner-wrapper view-padding-inner-wrapper">
-    <h1>Message Creator</h1>
+    <div class="d-flex align-center">
+      <h1>Message Creator</h1>
+      <v-btn
+        outlined
+        color="primary"
+        class="ml-auto"
+        @click="testDialog = true"
+      >
+        Test
+      </v-btn>
+    </div>
     <v-text-field
       dense
       outlined
@@ -11,6 +21,12 @@
       @change="changes()"
       class="mt-4 mb-4"
     />
+    <div class="mt-2 mb-2">
+      The editor allows you to easily create your own custom message. You can either choose between the Basic Editor with WYSIWYG controls,
+      or the advanced editor with HTML and CSS. With both editors it is recommended you use the test button to try out sending a message before
+      you turn on Bar 3 and send it to new nations. Finally, you can use two variables in your messages. Use <code>\(nation)</code> to substitute the
+      nation name, and use <code>\(leader)</code> to substitute the leader name in your messages or subject line.
+    </div>
     <v-tabs v-model="editorTab" class="mt-2" style="margin-bottom: 200px">
       <v-tab>
         Basic Editor
@@ -37,8 +53,9 @@
     </v-tabs>
     <saved-changes-card
       v-model="saveChangesOpen"
-      @save="save()"
+      @save="save($event)"
     />
+    <test-message-dialog v-model="testDialog" @send="testMessage($event)"/>
   </div>
 </template>
 
@@ -50,12 +67,15 @@
   import MessageCreator from '@/components/MessageCreator.vue';
   import AdvancedMessageCreator from '@/components/AdvancedMessageCreator.vue';
   import SavedChangesCard from '@/components/SavedChangesCard.vue';
-
+  import TestMessageDialog from '@/components/TestMessageDialog.vue';
+  import sendMessage from '@/actions/sendMessage';
+  
   @Component({
     components: {
       MessageCreator,
       AdvancedMessageCreator,
-      SavedChangesCard
+      SavedChangesCard,
+      TestMessageDialog
     }
   })
   export default class MessageDesigner extends Vue {
@@ -72,6 +92,7 @@
     subject = '';
     saveChangesOpen = false;
     error = false;
+    testDialog = false;
 
     async mounted() {
       const config = await getConfig();
@@ -121,6 +142,11 @@
       } else {
         this.saveChangesOpen = false;
       }
+    }
+
+    async testMessage(nationDetails: {nationName: string; nationID: string; leaderName: string}) {
+      const success = await sendMessage((this.editorTab == 0) ? this.messageHTML.quill : this.messageHTML.advanced, nationDetails); 
+      if (!success) alert('Couldn\'t send your message!');
     }
   }
 </script>

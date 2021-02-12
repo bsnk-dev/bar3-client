@@ -11,6 +11,7 @@ export default new Vuex.Store({
     sentMessages: [],
     lastRefreshed: 0,
     packageVersion: process.env.PACKAGE_VERSION || '0',
+    serverVersion: process.env.BAR3_SERVER_VERSION || '0',
     apiDetails: {
       used: 0,
       max: 0,
@@ -84,6 +85,10 @@ export default new Vuex.Store({
 
     appVersion: (state) => {
       return state.packageVersion;
+    },
+
+    serverVersion: (state) => {
+      return state.serverVersion;
     },
 
     apiDetails: (state) => {

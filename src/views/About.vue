@@ -25,7 +25,7 @@
           color="black"
           depressed
           dark
-          href="https://github.com/bsnk-dev/bar3-client"
+          href="https://github.com/bsnk-dev/bar3-server"
           target="_blank"
         >
           <v-icon
@@ -39,6 +39,8 @@
         <v-btn
           depressed
           class="ml-4"
+          href="https://bar3.bsnk.dev"
+          target="_blank"
         >
           <v-icon
             left

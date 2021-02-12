@@ -12,7 +12,7 @@ export default async function checkForUpdates(): Promise<GitHubTag | Error | boo
   const json: GitHubTag[] = await res.json();
   if (!json) throw new Error('Cannot parse JSON tags from GitHub.');
 
-  if (json[0]?.name != store.getters.packageVersion) {
+  if (json[0]?.name != store.getters.serverVersion) {
     return json[0];
   }
 

@@ -21,13 +21,13 @@
         </div>
       </template>
       
-      <application-on-control class="ml-auto"/>
+      <application-on-control :disabled="!setup" class="ml-auto"/>
     </v-app-bar>
 
     <side-bar v-model="sideBarOpen" :disabled="!setup"/>
 
     <v-main>
-      <router-view v-if="setup">
+      <router-view v-if="setup" @refresh="getApplicationData()" @check-for-updates="checkForUpdates()">
       </router-view>
       <setup-card v-else v-model="setupCardOpen" @complete="getApplicationData()"/>
     </v-main>
@@ -40,6 +40,7 @@ import Component from 'vue-class-component';
 import SideBar from '@/components/SideBar.vue';
 import SetupCard from '@/components/SetupCard.vue'; // @ is an alias to /src
 import ApplicationOnControl from '@/components/ApplicationOnControl.vue';
+import checkForUpdates from '@/actions/checkForUpdates';
 
 @Component({
   name: 'App',
@@ -78,14 +79,34 @@ export default class App extends Vue {
     this.$store.commit('setApplicationState', json.applicationOn);
     this.$store.commit('setSentMessages', json.sentMessages);
     this.$store.commit('setAPIDetails', json.apiDetails);
+    this.$store.commit('setLastRefreshed', Date.now());
 
     if (!this.setup) {
       this.setupCardOpen = true;
     }
   }
 
+  timeoutGetApplicationData() {
+    setTimeout(() => {
+      this.timeoutGetApplicationData();
+      this.getApplicationData();
+    }, 30000);
+  }
+
+  async checkForUpdates() {
+    const update = await checkForUpdates().catch((e) => {
+      console.error(e);
+      return null;
+    });
+    if (!update) return;
+    
+    this.$store.commit('setNewUpdate', update);
+  }
+
   mounted() {
     this.getApplicationData();
+    this.timeoutGetApplicationData();
+    this.checkForUpdates();
   }
 }
 </script>

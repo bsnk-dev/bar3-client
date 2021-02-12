@@ -42,7 +42,7 @@
     <h5>
       Preview
     </h5>
-    <preview-message :html-preview="config.messageHTML"/>
+    <preview-message :html-preview="config.messageHTML" class="preview"/>
     <saved-changes-card
       v-model="saveChangesOpen"
       @save="save()"
@@ -114,3 +114,13 @@
     }
   }
 </script>
+
+<style scoped>
+  .preview {
+    border-radius: 5px;
+    padding: 10px;
+    min-height: 200px;
+    width: 100%;
+    font-family: "Roboto",Arial;
+  }
+</style>

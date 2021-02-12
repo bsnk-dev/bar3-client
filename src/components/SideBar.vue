@@ -32,13 +32,14 @@
       >
         <v-list-item-group
           v-model="selectedItem"
+          mandatory
           color="primary"
         >
           <v-list-item
             v-for="item in items"
             :key="item.title"
             :disabled="disabled"
-            @click="$router.push({'path': item.path})"
+            @click="goto(item.path)"
           >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
@@ -91,7 +92,13 @@ import Vue from 'vue';
     ];
 
     selectedItem = 0;
-    
+
+    goto(path: string) {
+      if (this.$route.path != path) {
+        this.$router.push({'path': path})
+      }
+    }
+
     @Prop(Boolean) value!: boolean;
     @Prop(Boolean) disabled!: boolean;
 

@@ -2,6 +2,7 @@
   <v-btn
     :color="applicationOn ? 'green' : 'red'"
     depressed
+    :disabled="disabled"
     @click="toggleApplication()"
   >
     <v-icon
@@ -14,11 +15,13 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from 'vue-property-decorator';
+  import {Component, Vue, Prop} from 'vue-property-decorator';
   import setApplicationState from '@/actions/setApplicationState';
 
   @Component
   export default class ApplicationOnControl extends Vue {
+    @Prop(Boolean) disabled!: boolean;
+
     get applicationOn() {
       return this.$store.getters.applicationOn;
     }

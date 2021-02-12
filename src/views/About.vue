@@ -1,6 +1,7 @@
 <template>
   <div class="about view-small-inner-wrapper view-padding-inner-wrapper">
-    <h1>About</h1>
+    <h1 class="mb-4">About</h1>
+    <update-available-banner/>
     <v-card
       outlined
       class="mt-10"
@@ -24,6 +25,8 @@
           color="black"
           depressed
           dark
+          href="https://github.com/bsnk-dev/bar3-client"
+          target="_blank"
         >
           <v-icon
             left
@@ -44,6 +47,19 @@
           </v-icon>
           Web
         </v-btn>
+        <v-btn
+          text
+          class="ml-4"
+          @click="$emit('checkForUpdates')"
+          v-if="false"
+        >
+          <v-icon
+            left
+          >
+            mdi-refresh
+          </v-icon>
+          Check for Updates
+        </v-btn>
       </v-list-item>
     </v-card>
     <v-card
@@ -59,6 +75,7 @@
       <v-card-text>
         <div>Bar 3 is offered by bsnk-dev.</div>
         <div>&copy; Copyright 2021 bsnk-dev. All rights reserved.</div>
+        <a href = "mailto: admin@bsnk.dev">Email</a>
       </v-card-text>
     </v-card>
   </div>
@@ -66,8 +83,13 @@
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
+  import UpdateAvailableBanner from '@/components/UpdateAvailableBanner.vue';
   
-  @Component
+  @Component({
+    components: {
+      UpdateAvailableBanner
+    }
+  })
   export default class About extends Vue {
     get appVersion() {
       return this.$store.getters.appVersion;

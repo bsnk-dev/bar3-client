@@ -2,8 +2,8 @@
 
 <template>
   <div class="view-small-inner-wrapper view-padding-inner-wrapper">
-    <div class="d-flex align-center">
-      <h1>Message Creator</h1>
+    <div class="d-flex align-center mb-4">
+      <h1 class="">Message Creator</h1>
       <v-btn
         outlined
         color="primary"
@@ -13,6 +13,7 @@
         Test
       </v-btn>
     </div>
+    <update-available-banner/>
     <v-text-field
       dense
       outlined
@@ -27,7 +28,7 @@
       you turn on Bar 3 and send it to new nations. Finally, you can use two variables in your messages. Use <code>\(nation)</code> to substitute the
       nation name, and use <code>\(leader)</code> to substitute the leader name in your messages or subject line.
     </div>
-    <v-tabs v-model="editorTab" class="mt-2" style="margin-bottom: 200px">
+    <v-tabs v-model="editorTab" class="mt-2" style="margin-bottom: 200px" @change="changes()">
       <v-tab>
         Basic Editor
       </v-tab>
@@ -69,13 +70,15 @@
   import SavedChangesCard from '@/components/SavedChangesCard.vue';
   import TestMessageDialog from '@/components/TestMessageDialog.vue';
   import sendMessage from '@/actions/sendMessage';
+  import UpdateAvailableBanner from '@/components/UpdateAvailableBanner.vue';
   
   @Component({
     components: {
       MessageCreator,
       AdvancedMessageCreator,
       SavedChangesCard,
-      TestMessageDialog
+      TestMessageDialog,
+      UpdateAvailableBanner
     }
   })
   export default class MessageDesigner extends Vue {
@@ -102,6 +105,7 @@
         this.messageHTML.quill = config.messageHTML || '';
         this.subject = config.messageSubject || '';
         this.config = config;
+        this.editorTab = config.currentEditor || 0;
         this.changes();
       } else {
         alert('Couldn\'t retrieve your config!');
@@ -118,6 +122,9 @@
       } else if (this.subject != this.config.messageSubject) {
         this.saveChangesOpen = true;
         return;
+      } else if (this.editorTab != this.config.currentEditor) {
+        this.saveChangesOpen = true;
+        return;
       }
 
       this.saveChangesOpen = false;
@@ -131,6 +138,7 @@
           html: this.advancedRaw.html,
           css: this.advancedRaw.css,
         },
+        currentEditor: this.editorTab,
       };
 
       const res = await sendConfig(newConfig);

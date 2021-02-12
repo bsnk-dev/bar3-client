@@ -96,7 +96,8 @@
                   This is the message creator. It allows you to easily create rich messages or advanced messages. 
                   You can create a new message later, but you must create one before you can use Bar 3.
                   The advanced editor allows you to create html and css whilst previewing its result, 
-                  it is important you test these in the real game using the test button.
+                  it is important you test these in the real game using the test button in the message creator page,
+                  after you finish this setup.
                 </article>
 
                 <v-text-field
@@ -241,6 +242,7 @@
           html: this.setup.advancedRaw.html,
           css: this.setup.advancedRaw.css,
         },
+        currentEditor: this.editorTab,
         updatePeriodMilliseconds: this.setup.minutesToUpdate * 60000,
       }); // we are done, send the config to the app
 

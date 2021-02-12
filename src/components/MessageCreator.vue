@@ -33,7 +33,7 @@
 
       // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [ 'link', 'image', 'video', 'formula' ],          // add's image support
+      [ 'link', 'image', 'video'],          // add's image support
 
       [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
       [{ 'font': [] }],
@@ -61,9 +61,11 @@
         theme: 'snow'
       });
 
-      this.editor.on('text-change', debounce(() => {
+      this.editor.on('text-change', debounce((delta: any, oldContents: any, source: string) => {
+        if (source != 'user') return;
+
         this.digestQuill((this.$refs.editor as Element).children[0].innerHTML);
-      }, 1000));
+      }, 120));
 
       this.messageQuill = this.inputHTML || '';
       this.editor?.setText(this.messageQuill);

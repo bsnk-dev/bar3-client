@@ -1,6 +1,6 @@
 <template>
   <div v-if="value">
-    <template v-if="$vuetify.breakpoint.mobile">
+    <template v-if="$vuetify.breakpoint.name == 'xs'">
       <bottom-sheet
         v-model="bottomSheetState"
         v-if="bottomSheetState != 'close'"

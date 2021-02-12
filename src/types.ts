@@ -8,6 +8,7 @@ export interface Config {
     html: string;
     css: string;
   };
+  currentEditor?: number;
   updatePeriodMilliseconds?: number;
   queueTime?: number;
   configVersion?: string;
@@ -21,6 +22,7 @@ export class DefaultConfig implements Config {
     html: '',
     css: ''
   };
+  currentEditor = 0;
   updatePeriodMilliseconds = 0;
 }
 
@@ -135,4 +137,16 @@ export namespace VueLineChart {
     pointHitRadius = 5;
     pointRadius = 0;
   }
+}
+
+export interface GitHubTag {
+  name: string;
+  commit: Commit;
+  zipball_url: string;
+  tarball_url: string;
+  node_id: string;
+}
+export interface Commit {
+  sha: string;
+  url: string;
 }

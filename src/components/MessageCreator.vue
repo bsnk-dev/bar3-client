@@ -3,7 +3,7 @@
     <div id="toolbar">
     </div>
     
-    <div id="editor" class="editor" ref="editor">
+    <div id="editor" class="editor no-overflow" ref="editor">
     </div>
   </div>
 </template>
@@ -88,5 +88,15 @@
   .editor {
     min-height: 30vh;
     color: black;
+  }
+
+  >>> .v-window {
+      overflow: visible !important;
+  }
+</style>
+
+<style>
+  .v-window {
+      overflow: visible !important;
   }
 </style>

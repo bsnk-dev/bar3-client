@@ -80,6 +80,10 @@ export default class App extends Vue {
     this.$store.commit('setSentMessages', json.sentMessages);
     this.$store.commit('setAPIDetails', json.apiDetails);
     this.$store.commit('setLastRefreshed', Date.now());
+    this.$store.commit('setServerVersion', json.serverVersion);
+
+    // We have the server version, check for a new one
+    this.checkForUpdates();
 
     if (!this.setup) {
       this.setupCardOpen = true;
@@ -106,7 +110,6 @@ export default class App extends Vue {
   mounted() {
     this.getApplicationData();
     this.timeoutGetApplicationData();
-    this.checkForUpdates();
   }
 }
 </script>

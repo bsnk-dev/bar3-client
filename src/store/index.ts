@@ -7,11 +7,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isApplicationOn: false,
-    serverIP: 'http://'+location.hostname+':8055',
+    // serverIP: 'http://'+location.hostname+':'+location.port,
+    serverIP: 'http://'+location.hostname+':'+(Vue.config.devtools ? '8055': location.port),
     sentMessages: [],
     lastRefreshed: 0,
     packageVersion: process.env.PACKAGE_VERSION || '0',
-    serverVersion: process.env.BAR3_SERVER_VERSION || '0',
+    serverVersion: '',
     apiDetails: {
       used: 0,
       max: 0,
@@ -122,6 +123,10 @@ export default new Vuex.Store({
 
     setNewUpdate(state, update: GitHubTag) {
       state.newUpdate = update;
+    },
+
+    setServerVersion(state, newServerVersion: string) {
+      state.serverVersion = newServerVersion;
     }
   },
   actions: {

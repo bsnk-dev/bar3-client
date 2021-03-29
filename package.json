@@ -1,9 +1,6 @@
 {
   "name": "bar3-client",
   "version": "1.0.0",
-  "bar3": {
-    "serverVersion": "1.0.3"
-  },
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

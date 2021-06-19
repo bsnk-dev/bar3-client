@@ -4,6 +4,8 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import analytics from './modules/analytics';
+
 export default new Vuex.Store({
   state: {
     isApplicationOn: false,
@@ -132,5 +134,6 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    analytics
   }
 })

@@ -67,6 +67,27 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <div v-if="!loaded">
+      <v-skeleton-loader
+        class="mx-auto"
+        type="image"
+      ></v-skeleton-loader>
+      <v-row class="mt-6">
+        <v-col cols="12" md="6">
+          <v-skeleton-loader
+            class="mx-auto"
+            type="image"
+          ></v-skeleton-loader>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-skeleton-loader
+            class="mx-auto"
+            type="image"
+          ></v-skeleton-loader>
+        </v-col>
+      </v-row>
+    </div>
   </div>
 </template>
 

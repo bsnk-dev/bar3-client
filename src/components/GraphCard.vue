@@ -72,6 +72,7 @@
 
       const dataset = new VueLineChart.Dataset();
       dataset.label = 'Message Count';
+      dataset.borderColor = `rgb(0, 115, 255)`;
       dataset.fill = false;
 
       if (this.sentMessages.length == 0) {

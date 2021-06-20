@@ -101,11 +101,17 @@ export interface SideBarItem {
 
 export namespace VueLineChart {
   export const color = [
-    'rgb(0, 123, 255)',
-    'rgb(0, 125, 12)',
-    'rgb(219, 0, 0)',
-    'rgb(219, 106, 0)',
-    'rgb(0, 0, 0)',
+    'rgba(187, 96, 109, 0.8)',
+    'rgba(177, 103, 135, 0.8)',
+    'rgba(154, 115, 157, 0.8)',
+    'rgba(121, 128, 170, 0.8)',
+    'rgba(81, 139, 170, 0.8)',
+    'rgba(42, 147, 158, 0.8)',
+    'rgba(35, 153, 136, 0.8)',
+    'rgba(67, 155, 109, 0.8)',
+    'rgba(102, 154, 83, 0.8)',
+    'rgba(137, 150, 62, 0.8)',
+    'rgba(170, 142, 56, 0.8)', 
   ];
   
   export interface ChartData {
@@ -120,7 +126,7 @@ export namespace VueLineChart {
   
   export interface Dataset {
     label: string;
-    data: (number | string)[];
+    data: (number | string | {x: string | number; y: string | number})[];
     borderColor: string;
     backgroundColor: string;
     fill: boolean;
@@ -130,7 +136,7 @@ export namespace VueLineChart {
 
   export class Dataset implements Dataset {
     label = '';
-    data: (number | string)[] = [];
+    data: (number | string | {x: string | number; y: string | number})[] = [];
     borderColor = color[0];
     backgroundColor = toRGBA(color[0], 0.3);
     fill = true;

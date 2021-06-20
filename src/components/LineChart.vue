@@ -32,7 +32,12 @@ export default {
           xAxes: [{
             gridLines: {
               display: false,
-            }
+            },
+             id: 'ScartCharxAxes',
+              type: 'time',
+              time: {
+                unit: 'day',
+              }
           }]
         },
         legend: {

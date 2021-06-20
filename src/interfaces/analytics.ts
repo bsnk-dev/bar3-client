@@ -2,7 +2,7 @@ export interface AnalyticalCampaign {
   sentCount: number;
   name: string;
   createdTime: number;
-  links: (null)[] | null;
+  links: Link[];
   messagePixel: Pixel;
   _id: string;
 }

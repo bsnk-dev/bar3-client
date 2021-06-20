@@ -21,11 +21,18 @@
     <v-text-field
       label="Minutes to Update"
       type="number"
-      class="mb-16"
       outlined
       v-model="minutesToUpdate"
       @input="changes()"
     />
+
+    <v-checkbox
+      label="Message Analytics"
+      class="mb-16"
+      v-model="analyticsEnabled"
+      @change="changes()"
+    />
+
     <div class="d-flex align-center">
       <h2 class="mb-3 mt-2">
         Your Message
@@ -68,12 +75,14 @@
     config: Config = new DefaultConfig();
     minutesToUpdate = 0;
     apiKey = '';
+    analyticsEnabled = false;
     saveChangesOpen = false;
     error = false;
 
     async save() {
       const newConfig = {
         apiKey: this.apiKey,
+        analyticsEnabled: this.analyticsEnabled,
         updatePeriodMilliseconds: this.minutesToUpdate * 60000
       };
 
@@ -95,6 +104,11 @@
       }
       
       if (this.minutesToUpdate != (this.config.updatePeriodMilliseconds || 0) / 60000) {
+        this.saveChangesOpen = true;
+        return;
+      }
+
+      if (this.analyticsEnabled != this.config.analyticsEnabled) {
         this.saveChangesOpen = true;
         return;
       }

@@ -89,10 +89,6 @@
     min-height: 30vh;
     color: black;
   }
-
-  >>> .v-window {
-      overflow: visible !important;
-  }
 </style>
 
 <style>

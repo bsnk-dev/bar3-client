@@ -34,12 +34,12 @@
 </template>
 
 <script lang="ts">
-import {GitHubTag} from '@/types';
+import {GitHubRelease} from '@/types';
 import {Component, Vue} from 'vue-property-decorator';
 
   @Component
   export default class UpdateAvailableBanner extends Vue {
-    get update(): GitHubTag {
+    get update(): GitHubRelease {
       return this.$store.getters.newUpdate;
     }
   }

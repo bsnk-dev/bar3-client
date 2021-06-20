@@ -6,10 +6,10 @@
     <v-row class="blue darken-2 white--text ma-0 align-center pb-4">
       <v-col cols="12" sm="6">
         <div class="text-h6">
-          My First Analytical Campaign
+          {{ campaign.name }}
         </div>
         <div class="text-subtitle-1">
-          Created June 1st
+          Created {{ new Date(campaign.createdTime).toLocaleDateString() }}
         </div>
       </v-col>
 
@@ -39,7 +39,7 @@
       </v-col>
     </v-row>
     <v-row class="ma-5" style="height: 350px">
-      <line-chart height="100%" style="width: 100%;" v-if="loaded" :data="chartData"/>
+      <line-chart style="width: 100%; height: 100%;" v-if="loaded" :data="chartData"/>
     </v-row>
   </v-card>
 </template>
@@ -47,7 +47,7 @@
 <script lang="ts">
 import { AnalyticalCampaign } from '@/interfaces/analytics';
 import { VueLineChart } from '@/types';
-import {Prop, Component, Vue} from 'vue-property-decorator';
+import {Prop, Component, Vue, Watch} from 'vue-property-decorator';
 import LineChart from '@/components/LineChart.vue';
 
 @Component({
@@ -135,28 +135,6 @@ export default class AnalyticsGraphCard extends Vue {
     }
   }
 
-  /**processLabels(...labels: Date[][]) {
-    let allLabels: Date[] = [];
-    
-    for (const labelSet of labels) {
-      allLabels = allLabels.concat(labelSet);
-    }
-
-    allLabels.sort((a, b) => a.getTime() - b.getTime());
-
-    const processedLabels: string[] = [];
-
-    let lastLabel = allLabels[0];
-    for (let i = 0; i < allLabels.length; i++) {
-      if (lastLabel.getTime() == allLabels[i].getTime()) continue;
-      processedLabels.push(allLabels[i].toLocaleDateString());
-
-      lastLabel = allLabels[i];
-    }
-
-    return processedLabels;
-  }*/
-
   getTotalLinkClicks() {
     this.totalLinkClicks = 0;
     
@@ -166,10 +144,20 @@ export default class AnalyticsGraphCard extends Vue {
   }
 
   generateData() {
-    this.getTotalLinkClicks();
+    this.chartData = new VueLineChart.ChartData();
 
+    this.getTotalLinkClicks();
     this.generateViewsHistory();
     this.generateLinkClicksGraph();
+
+    this.loaded = true;
+  }
+
+  @Watch('campaign')
+  onCampaignChanged() {
+    this.loaded = false;
+
+    this.generateData();
 
     this.loaded = true;
   }

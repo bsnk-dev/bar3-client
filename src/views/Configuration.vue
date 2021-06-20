@@ -120,6 +120,7 @@
       const config = await getConfig();
       if (config && !(config instanceof Error)) {
         this.config = config;
+        this.analyticsEnabled = config.analyticsEnabled || false;
         this.minutesToUpdate = (config.updatePeriodMilliseconds || 0) / 60000;
         this.apiKey = config.apiKey || '';
       } else {

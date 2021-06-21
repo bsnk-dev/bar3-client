@@ -26,6 +26,13 @@
       @input="changes()"
     />
 
+    <h2 class="mb-3 mt-8">
+      Analytics
+    </h2>
+    <article>
+      Analytics, found on the analytics page on the navbar gives you insights into how many times your messages are viewed and how many times links inside them are clicked.
+    </article>
+
     <v-checkbox
       label="Message Analytics"
       class="mb-16"

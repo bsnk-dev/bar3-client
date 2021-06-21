@@ -13,7 +13,7 @@
         </v-col>
         <v-col class="shrink d-flex">
           <v-btn
-            :href="`https://github.com/bsnk-dev/bar3-server/releases/${update.name}`"
+            :href="`https://github.com/bsnk-dev/bar3-server/releases/${update.tag_name}`"
             :target="_blank"
             color="primary"
             depressed

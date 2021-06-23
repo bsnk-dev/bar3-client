@@ -18,6 +18,7 @@
       dense
       outlined
       placeholder="Subject Line"
+      maxlength="40"
       v-model="subject"
       @change="changes()"
       class="mt-4 mb-4"

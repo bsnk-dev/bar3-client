@@ -27,6 +27,7 @@ export default {
             ticks: {
               min: 0,
               //max: 1,
+              precision: 0,
             },
           }],
           xAxes: [{

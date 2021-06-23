@@ -129,6 +129,7 @@ export namespace VueLineChart {
   export interface Dataset {
     label: string;
     data: (number | string | {x: string | number; y: string | number})[];
+    lineTension: number;
     borderColor: string;
     backgroundColor: string;
     fill: boolean;
@@ -139,6 +140,7 @@ export namespace VueLineChart {
   export class Dataset implements Dataset {
     label = '';
     data: (number | string | {x: string | number; y: string | number})[] = [];
+    lineTension = 0;
     borderColor = color[0];
     backgroundColor = toRGBA(color[0], 0.3);
     fill = true;

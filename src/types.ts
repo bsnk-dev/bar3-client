@@ -8,6 +8,7 @@ export interface Config {
     html: string;
     css: string;
   };
+  analyticsEnabled?: boolean;
   currentEditor?: number;
   updatePeriodMilliseconds?: number;
   queueTime?: number;
@@ -22,6 +23,7 @@ export class DefaultConfig implements Config {
     html: '',
     css: ''
   };
+  analyticsEnabled = false;
   currentEditor = 0;
   updatePeriodMilliseconds = 0;
 }
@@ -101,11 +103,17 @@ export interface SideBarItem {
 
 export namespace VueLineChart {
   export const color = [
-    'rgb(0, 123, 255)',
-    'rgb(0, 125, 12)',
-    'rgb(219, 0, 0)',
-    'rgb(219, 106, 0)',
-    'rgb(0, 0, 0)',
+    'rgba(187, 96, 109, 0.8)',
+    'rgba(177, 103, 135, 0.8)',
+    'rgba(154, 115, 157, 0.8)',
+    'rgba(121, 128, 170, 0.8)',
+    'rgba(81, 139, 170, 0.8)',
+    'rgba(42, 147, 158, 0.8)',
+    'rgba(35, 153, 136, 0.8)',
+    'rgba(67, 155, 109, 0.8)',
+    'rgba(102, 154, 83, 0.8)',
+    'rgba(137, 150, 62, 0.8)',
+    'rgba(170, 142, 56, 0.8)', 
   ];
   
   export interface ChartData {
@@ -120,7 +128,8 @@ export namespace VueLineChart {
   
   export interface Dataset {
     label: string;
-    data: (number | string)[];
+    data: (number | string | {x: string | number; y: string | number})[];
+    lineTension: number;
     borderColor: string;
     backgroundColor: string;
     fill: boolean;
@@ -130,7 +139,8 @@ export namespace VueLineChart {
 
   export class Dataset implements Dataset {
     label = '';
-    data: (number | string)[] = [];
+    data: (number | string | {x: string | number; y: string | number})[] = [];
+    lineTension = 0;
     borderColor = color[0];
     backgroundColor = toRGBA(color[0], 0.3);
     fill = true;
@@ -139,14 +149,58 @@ export namespace VueLineChart {
   }
 }
 
-export interface GitHubTag {
-  name: string;
-  commit: Commit;
-  zipball_url: string;
-  tarball_url: string;
-  node_id: string;
-}
-export interface Commit {
-  sha: string;
+export interface GitHubRelease {
   url: string;
+  html_url: string;
+  assets_url: string;
+  upload_url: string;
+  tarball_url: string;
+  zipball_url: string;
+  id: number;
+  node_id: string;
+  tag_name: string;
+  target_commitish: string;
+  name: string;
+  body: string;
+  draft: boolean;
+  prerelease: boolean;
+  created_at: string;
+  published_at: string;
+  author: UploaderOrAuthor;
+  assets?: (Asset)[] | null;
+}
+export interface UploaderOrAuthor {
+  login: string;
+  id: number;
+  node_id: string;
+  avatar_url: string;
+  gravatar_id: string;
+  url: string;
+  html_url: string;
+  followers_url: string;
+  following_url: string;
+  gists_url: string;
+  starred_url: string;
+  subscriptions_url: string;
+  organizations_url: string;
+  repos_url: string;
+  events_url: string;
+  received_events_url: string;
+  type: string;
+  site_admin: boolean;
+}
+export interface Asset {
+  url: string;
+  browser_download_url: string;
+  id: number;
+  node_id: string;
+  name: string;
+  label: string;
+  state: string;
+  content_type: string;
+  size: number;
+  download_count: number;
+  created_at: string;
+  updated_at: string;
+  uploader: UploaderOrAuthor;
 }

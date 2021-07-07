@@ -6,6 +6,7 @@ import About from '../views/About.vue'
 import Configuration from '../views/Configuration.vue';
 import MessageCreator from '../views/MessageCreator.vue';
 import Help from '../views/Help.vue';
+import Analytics from '../views/Analytics.vue';
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,11 @@ const routes: Array<RouteConfig> = [
     path: '/message-creator',
     name: 'Message Creator',
     component: MessageCreator
+  },
+  {
+    path: '/analytics',
+    name: 'Analytics Dashboard',
+    component: Analytics,
   },
   {
     path: '/help',

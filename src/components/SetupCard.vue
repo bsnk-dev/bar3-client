@@ -34,7 +34,16 @@
 
             <v-divider></v-divider>
 
-            <v-stepper-step step="4">
+            <v-stepper-step
+              :complete="page > 4"
+              step="4"
+            >
+              Analytics
+            </v-stepper-step>
+
+            <v-divider></v-divider>
+
+            <v-stepper-step step="5">
               You're Done
             </v-stepper-step>
           </v-stepper-header>
@@ -128,6 +137,26 @@
 
             <v-stepper-content step="4">
               <div class="d-flex flex-column">
+                <h2 class="mb-3">
+                  Analytics
+                </h2>
+                <article class="small-block">
+                  Bar 3 can use proprietary analyitcs technology to safely and securely record the number of views your messages gets, 
+                  and how many times links inside of them are clicked. If you would like to be able to create campaigns and track the effectiveness of
+                  your message, check the box below. You can skip this step if you want to and enable analytics later.
+                </article>
+
+                <v-checkbox
+                  label="Enable Analytics"
+                  class="small-block mt-6"
+                  outlined
+                  v-model="setup.analyticsEnabled"
+                />
+              </div>
+            </v-stepper-content>
+
+            <v-stepper-content step="5">
+              <div class="d-flex flex-column">
                 <h2 class="mb-3 black--text">
                   You're Done! 🎉
                 </h2>
@@ -186,7 +215,7 @@
   export default class SetupCard extends Vue {
     isShowing = false;
     page = 1;
-    maxPage = 4;
+    maxPage = 5;
     editorTab = 0;
     setup = {
       apiKey: '',
@@ -197,6 +226,7 @@
         html: '',
         css: '',
       },
+      analyticsEnabled: false,
       minutesToUpdate: 3,
     };
     error = false; // TODO: Add error stopper
@@ -242,6 +272,7 @@
           html: this.setup.advancedRaw.html,
           css: this.setup.advancedRaw.css,
         },
+        analyticsEnabled: this.setup.analyticsEnabled,
         currentEditor: this.editorTab,
         updatePeriodMilliseconds: this.setup.minutesToUpdate * 60000,
       }); // we are done, send the config to the app

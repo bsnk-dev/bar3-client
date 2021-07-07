@@ -72,7 +72,8 @@
         Bar 3
       </v-card-title>
       <v-card-subtitle>
-        Version {{ appVersion }}
+        <div>Client — {{ appVersion }}</div>
+        <div>Server — {{ serverVersion }}</div>
       </v-card-subtitle>
       <v-card-text>
         <div>Bar 3 is offered by bsnk-dev.</div>
@@ -95,6 +96,10 @@
   export default class About extends Vue {
     get appVersion() {
       return this.$store.getters.appVersion;
+    }
+
+    get serverVersion() {
+      return this.$store.getters.serverVersion;
     }
   }
 </script>

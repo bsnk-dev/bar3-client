@@ -27,12 +27,18 @@ export default {
             ticks: {
               min: 0,
               //max: 1,
+              precision: 0,
             },
           }],
           xAxes: [{
             gridLines: {
               display: false,
-            }
+            },
+             id: 'ScartCharxAxes',
+              type: 'time',
+              time: {
+                unit: 'day',
+              }
           }]
         },
         legend: {
@@ -44,6 +50,7 @@ export default {
           },
         },
         responsive: true,
+        maintainAspectRatio: false,
       });
     }
   },

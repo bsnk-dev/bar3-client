@@ -80,6 +80,11 @@ import Vue from 'vue';
         path: '/message-creator',
       },
       {
+        title: 'Analytics',
+        icon: 'mdi-chart-timeline-variant-shimmer',
+        path: '/analytics',
+      },
+      {
         title: 'About',
         icon: 'mdi-information',
         path: '/about',

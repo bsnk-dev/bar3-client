@@ -1,8 +1,10 @@
-import { GitHubTag } from '@/types';
+import { GitHubRelease } from '@/types';
 import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
+
+import analytics from './modules/analytics';
 
 export default new Vuex.Store({
   state: {
@@ -17,7 +19,7 @@ export default new Vuex.Store({
       used: 0,
       max: 0,
     },
-    newUpdate: null as null | GitHubTag,
+    newUpdate: null as null | GitHubRelease,
   },
   getters: {
     applicationOn(state) {
@@ -121,7 +123,7 @@ export default new Vuex.Store({
       state.lastRefreshed = time;
     },
 
-    setNewUpdate(state, update: GitHubTag) {
+    setNewUpdate(state, update: GitHubRelease) {
       state.newUpdate = update;
     },
 
@@ -132,5 +134,6 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    analytics
   }
 })

@@ -21,11 +21,25 @@
     <v-text-field
       label="Minutes to Update"
       type="number"
-      class="mb-16"
       outlined
       v-model="minutesToUpdate"
       @input="changes()"
     />
+
+    <h2 class="mb-3 mt-8">
+      Analytics
+    </h2>
+    <article>
+      Analytics, found on the analytics page on the navbar gives you insights into how many times your messages are viewed and how many times links inside them are clicked.
+    </article>
+
+    <v-checkbox
+      label="Message Analytics"
+      class="mb-16"
+      v-model="analyticsEnabled"
+      @change="changes()"
+    />
+
     <div class="d-flex align-center">
       <h2 class="mb-3 mt-2">
         Your Message
@@ -68,12 +82,14 @@
     config: Config = new DefaultConfig();
     minutesToUpdate = 0;
     apiKey = '';
+    analyticsEnabled = false;
     saveChangesOpen = false;
     error = false;
 
     async save() {
       const newConfig = {
         apiKey: this.apiKey,
+        analyticsEnabled: this.analyticsEnabled,
         updatePeriodMilliseconds: this.minutesToUpdate * 60000
       };
 
@@ -99,6 +115,11 @@
         return;
       }
 
+      if (this.analyticsEnabled != this.config.analyticsEnabled) {
+        this.saveChangesOpen = true;
+        return;
+      }
+
       this.saveChangesOpen = false;
     }
 
@@ -106,6 +127,7 @@
       const config = await getConfig();
       if (config && !(config instanceof Error)) {
         this.config = config;
+        this.analyticsEnabled = config.analyticsEnabled || false;
         this.minutesToUpdate = (config.updatePeriodMilliseconds || 0) / 60000;
         this.apiKey = config.apiKey || '';
       } else {

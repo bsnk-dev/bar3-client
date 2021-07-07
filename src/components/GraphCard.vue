@@ -68,14 +68,12 @@
     }
 
     generateSentMessagesChartData() {
-      const labels: string[] = [];
-
       const dataset = new VueLineChart.Dataset();
       dataset.label = 'Message Count';
+      dataset.borderColor = `rgb(0, 115, 255)`;
       dataset.fill = false;
 
       if (this.sentMessages.length == 0) {
-        this.chartData.labels = labels;
         this.chartData.datasets.push(dataset);
         this.loaded = true;
         return;
@@ -98,16 +96,10 @@
           lastMessageIndex++;
         }
 
-        labels.push(
-          new Date((i * twoHours) + firstMessage.sentTimeMilliseconds).toLocaleTimeString()
-        );
-
-        dataset.data.push(messagesAtIncrement);
+        dataset.data.push({ x: (new Date((i * twoHours) + firstMessage.sentTimeMilliseconds).toLocaleDateString()), y: messagesAtIncrement });
       }
 
-      this.chartData.labels = labels;
       this.chartData.datasets.push(dataset);
-
       this.loaded = true;
     }
 

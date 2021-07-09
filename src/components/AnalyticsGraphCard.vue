@@ -88,7 +88,7 @@ export default class AnalyticsGraphCard extends Vue {
         lastReadIndex++;
       }
 
-      dataset.data.push({ x: (new Date((i * dayInMiliseconds) + firstRead).toLocaleDateString()), y: messagesAtIncrement });
+      dataset.data.push({ x: (new Date((i * dayInMiliseconds) + firstRead).toLocaleDateString('en-US')), y: messagesAtIncrement });
     }
 
     this.chartData.datasets.push(dataset);
@@ -128,7 +128,7 @@ export default class AnalyticsGraphCard extends Vue {
           lastReadIndex++;
         }
 
-        dataset.data.push({x: (new Date((i * dayInMiliseconds) + firstRead).toLocaleDateString()), y: readsAtIncrement});
+        dataset.data.push({x: (new Date((i * dayInMiliseconds) + firstRead).toLocaleDateString('en-US')), y: readsAtIncrement});
       }
 
       this.chartData.datasets.push(dataset);

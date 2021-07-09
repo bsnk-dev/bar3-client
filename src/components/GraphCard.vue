@@ -96,7 +96,7 @@
           lastMessageIndex++;
         }
 
-        dataset.data.push({ x: (new Date((i * twoHours) + firstMessage.sentTimeMilliseconds).toLocaleDateString()), y: messagesAtIncrement });
+        dataset.data.push({ x: (new Date((i * twoHours) + firstMessage.sentTimeMilliseconds).toLocaleDateString('en-US')), y: messagesAtIncrement });
       }
 
       this.chartData.datasets.push(dataset);

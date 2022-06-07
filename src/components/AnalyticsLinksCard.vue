@@ -50,7 +50,7 @@ export default class AnalyticsLinkCard extends Vue {
   urlName(urlString: string) {
     const url = new URL(urlString);
 
-    return `${url.hostname}`;
+    return `${url.hostname + url.pathname}`;
   }
 }
 </script>

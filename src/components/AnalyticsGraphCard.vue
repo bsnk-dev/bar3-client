@@ -105,13 +105,13 @@ export default class AnalyticsGraphCard extends Vue {
       const urlInfo = new URL(link.url);
 
       const dataset = new VueLineChart.Dataset();
-      dataset.label = urlInfo.hostname;
+      dataset.label = urlInfo.hostname + urlInfo.pathname;
       dataset.borderColor = VueLineChart.color[colorIncremeter];
       dataset.fill = false;
 
       if (link.readCount == 0) {
         this.chartData.datasets.push(dataset);
-        return [];
+        continue;
       }
 
       const firstRead = link.readHistory[0];
